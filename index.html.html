@@ -1,0 +1,370 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.db{display:grid;grid-template-columns:220px 1fr;min-height:100vh;background:var(--color-background-tertiary)}
+.sidebar{background:var(--color-background-primary);border-right:0.5px solid var(--color-border-tertiary);padding:16px;display:flex;flex-direction:column;gap:16px}
+.logo{font-size:13px;font-weight:500;color:var(--color-text-primary);padding-bottom:12px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.logo span{display:block;font-size:11px;font-weight:400;color:var(--color-text-secondary);margin-top:3px}
+.sf-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.pill-group{display:flex;flex-direction:column;gap:4px}
+.pill{padding:7px 10px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;border:0.5px solid transparent;color:var(--color-text-secondary);transition:all .15s}
+.pill:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.pill.active{background:#EFF6FF;color:#185FA5;border-color:#B5D4F4;font-weight:500}
+.pill.active.icici{background:#FFF7ED;color:#854F0B;border-color:#FAC775}
+.pill.active.axis{background:#FBEAF0;color:#993556;border-color:#F4C0D1}
+.pill.active.all{background:#EAF3DE;color:#3B6D11;border-color:#C0DD97}
+select{width:100%;padding:7px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);color:var(--color-text-primary);font-size:13px;cursor:pointer;outline:none}
+select:focus{border-color:var(--color-border-primary)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500;margin-top:4px}
+.bw{background:#FCEBEB;color:#A32D2D}.bm{background:#FAEEDA;color:#854F0B}.bb{background:#EAF3DE;color:#3B6D11}
+.main{padding:16px;display:flex;flex-direction:column;gap:14px;overflow:auto}
+.top-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.tb-sub{font-size:12px;color:var(--color-text-secondary)}
+.kpi-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpi{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px}
+.kpi-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+.kpi-val{font-size:22px;font-weight:500;color:var(--color-text-primary);line-height:1}
+.kpi-sub{font-size:11px;color:var(--color-text-secondary);margin-top:4px}
+.kpi-up{color:#3B6D11}.kpi-dn{color:#A32D2D}.kpi-neu{color:#854F0B}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.charts-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.card-full{grid-column:1/-1}
+.card-title{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.scenario-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.spill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid transparent}
+.spill.w{background:#FCEBEB;color:#A32D2D;border-color:#F7C1C1}
+.spill.m{background:#FAEEDA;color:#854F0B;border-color:#FAC775}
+.spill.b{background:#EAF3DE;color:#3B6D11;border-color:#C0DD97}
+.spill.inactive{opacity:0.4}
+.tab-row{display:flex;gap:0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:12px}
+.tab{padding:7px 14px;font-size:12px;cursor:pointer;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px}
+.tab.active{color:#185FA5;border-bottom-color:#185FA5;font-weight:500}
+.range-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.range-lbl{font-size:12px;color:var(--color-text-secondary);min-width:80px}
+input[type=range]{flex:1}
+.range-val{font-size:12px;font-weight:500;color:var(--color-text-primary);min-width:40px;text-align:right}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:6px 10px;font-weight:500;font-size:11px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);text-transform:uppercase;letter-spacing:.05em}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--color-background-secondary)}
+.hdfc-c{color:#185FA5;font-weight:500}
+.icici-c{color:#854F0B;font-weight:500}
+.axis-c{color:#993556;font-weight:500}
+.up{color:#3B6D11}.dn{color:#A32D2D}
+</style>
+
+<div class="db">
+<div class="sidebar">
+  <div class="logo">
+    Indian Banking Dashboard
+    <span>FY2019 – FY2026 Scenario</span>
+  </div>
+
+  <div>
+    <div class="sf-label">Bank Filter</div>
+    <div class="pill-group">
+      <div class="pill active all" onclick="setBank('all',this)">All Banks</div>
+      <div class="pill" onclick="setBank('hdfc',this)">HDFC Bank</div>
+      <div class="pill" onclick="setBank('icici',this)">ICICI Bank</div>
+      <div class="pill" onclick="setBank('axis',this)">Axis Bank</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sf-label">Metric View</div>
+    <select id="metric-sel" onchange="setMetric(this.value)">
+      <option value="pat">Net Profit (PAT)</option>
+      <option value="nii">Net Interest Income</option>
+      <option value="npa">Gross NPA %</option>
+      <option value="roa">Return on Assets</option>
+      <option value="roe">Return on Equity</option>
+      <option value="nim">Net Interest Margin</option>
+    </select>
+  </div>
+
+  <div>
+    <div class="sf-label">Scenario (FY25)</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="badge bw">Worst &nbsp;–6% / –10% / –14%</div>
+      <div class="badge bm">Likely &nbsp;+8% / +10% / +12%</div>
+      <div class="badge bb">Best &nbsp;+14% / +18% / +22%</div>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--color-text-secondary)">Toggle scenarios in charts using the pills above each chart.</div>
+  </div>
+
+  <div style="margin-top:auto">
+    <div class="sf-label">Data Source</div>
+    <div style="font-size:11px;color:var(--color-text-secondary);line-height:1.6">Annual Reports FY19–FY24 (Indian GAAP Standalone). Scenario % are model assumptions.</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="top-bar">
+    <div>
+      <div class="tb-title" id="dash-title">All Banks — Net Profit (PAT)</div>
+      <div class="tb-sub">FY2019–FY2024 Historical + FY2025–FY2026 Forecast</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <div class="tab-row" style="border:0;margin:0">
+        <div class="tab active" onclick="setView('overview',this)">Overview</div>
+        <div class="tab" onclick="setView('scenario',this)">Scenario</div>
+        <div class="tab" onclick="setView('sensitivity',this)">Sensitivity</div>
+        <div class="tab" onclick="setView('table',this)">Data Table</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="kpi-row" class="kpi-row">
+    <div class="kpi"><div class="kpi-label">HDFC PAT FY24</div><div class="kpi-val">₹60,812 Cr</div><div class="kpi-sub kpi-up">+37.9% YoY</div></div>
+    <div class="kpi"><div class="kpi-label">ICICI PAT FY24</div><div class="kpi-val">₹40,888 Cr</div><div class="kpi-sub kpi-up">+28.2% YoY</div></div>
+    <div class="kpi"><div class="kpi-label">Axis PAT FY24</div><div class="kpi-val">₹26,248 Cr</div><div class="kpi-sub kpi-up">+5.6% YoY</div></div>
+    <div class="kpi"><div class="kpi-label">Best-Case FY25 (Axis)</div><div class="kpi-val">₹32,023 Cr</div><div class="kpi-sub kpi-up">+22% upside</div></div>
+  </div>
+
+  <div id="view-overview">
+    <div class="charts-grid">
+      <div class="card card-full">
+        <div class="card-title" id="main-chart-title">Net Profit (PAT) — ₹ Crore</div>
+        <div class="legend" id="main-legend">
+          <span class="leg"><span class="dot" style="background:#185FA5"></span>HDFC Bank</span>
+          <span class="leg"><span class="dot" style="background:#854F0B"></span>ICICI Bank</span>
+          <span class="leg"><span class="dot" style="background:#993556"></span>Axis Bank</span>
+        </div>
+        <div style="position:relative;height:230px"><canvas id="mainChart"></canvas></div>
+      </div>
+    </div>
+    <div class="charts-grid" style="margin-top:12px">
+      <div class="card">
+        <div class="card-title">Gross NPA % — Asset Quality</div>
+        <div class="legend">
+          <span class="leg"><span class="dot" style="background:#185FA5"></span>HDFC</span>
+          <span class="leg"><span class="dot" style="background:#854F0B"></span>ICICI</span>
+          <span class="leg"><span class="dot" style="background:#993556"></span>Axis</span>
+        </div>
+        <div style="position:relative;height:190px"><canvas id="npaChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">ROA & ROE — FY2024 Comparison</div>
+        <div class="legend">
+          <span class="leg"><span class="dot" style="background:#378ADD"></span>ROA %</span>
+          <span class="leg"><span class="dot" style="background:#1D9E75"></span>ROE %</span>
+        </div>
+        <div style="position:relative;height:190px"><canvas id="ratioChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-scenario" style="display:none">
+    <div class="card card-full" style="margin-bottom:12px">
+      <div class="card-title">PAT Scenario Forecast — FY2025 & FY2026</div>
+      <div class="scenario-pills" id="sc-pills">
+        <div class="spill w" onclick="toggleSc('w',this)">Worst Case</div>
+        <div class="spill m" onclick="toggleSc('m',this)">Most Likely</div>
+        <div class="spill b" onclick="toggleSc('b',this)">Best Case</div>
+      </div>
+      <div class="legend">
+        <span class="leg"><span class="dot" style="background:#185FA5"></span>HDFC</span>
+        <span class="leg"><span class="dot" style="background:#854F0B"></span>ICICI</span>
+        <span class="leg"><span class="dot" style="background:#993556"></span>Axis</span>
+      </div>
+      <div style="position:relative;height:260px"><canvas id="scChart"></canvas></div>
+    </div>
+    <div class="charts-grid">
+      <div class="card">
+        <div class="card-title">Gross NPA Projection by Scenario</div>
+        <div style="position:relative;height:200px"><canvas id="npaSc"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Credit Growth Projection by Scenario</div>
+        <div style="position:relative;height:200px"><canvas id="creditSc"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-sensitivity" style="display:none">
+    <div class="charts-grid" style="margin-bottom:12px">
+      <div class="card card-full">
+        <div class="card-title">Scenario Impact Range — PAT % Change vs FY2024</div>
+        <div style="position:relative;height:220px"><canvas id="tornadoChart"></canvas></div>
+      </div>
+    </div>
+    <div class="charts-grid3">
+      <div class="card">
+        <div class="card-title">HDFC Bank — Scenario Spread</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px">FY2025 PAT (₹ Crore)</div>
+        <div style="position:relative;height:150px"><canvas id="hdfcSc"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">ICICI Bank — Scenario Spread</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px">FY2025 PAT (₹ Crore)</div>
+        <div style="position:relative;height:150px"><canvas id="iciciSc"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Axis Bank — Scenario Spread</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px">FY2025 PAT (₹ Crore)</div>
+        <div style="position:relative;height:150px"><canvas id="axisSc"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-title">Scenario Assumptions — Key Variables</div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <tr><th>Variable</th><th>Worst Case</th><th>Most Likely</th><th>Best Case</th></tr>
+          <tr><td>RBI Repo Rate</td><td class="dn">6.75%</td><td class="kpi-neu">6.00%</td><td class="up">5.50%</td></tr>
+          <tr><td>GDP Growth (India)</td><td class="dn">5.5%</td><td class="kpi-neu">7.0%</td><td class="up">8.5%</td></tr>
+          <tr><td>Credit Growth (YoY)</td><td class="dn">8%</td><td class="kpi-neu">14%</td><td class="up">20%</td></tr>
+          <tr><td>NIM Direction</td><td class="dn">–25 bps</td><td class="kpi-neu">Stable</td><td class="up">+20 bps</td></tr>
+          <tr><td>Gross NPA Movement</td><td class="dn">+50 bps</td><td class="kpi-neu">Stable</td><td class="up">–30 bps</td></tr>
+          <tr><td>Operating Cost</td><td class="dn">Rising</td><td class="kpi-neu">Stable</td><td class="up">Falling</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-table" style="display:none">
+    <div class="card">
+      <div class="card-title">Full Historical Data — FY2019 to FY2024</div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <tr><th>Metric</th><th>Bank</th><th>FY2019</th><th>FY2020</th><th>FY2021</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>CAGR</th></tr>
+          <tr><td rowspan="3" style="color:var(--color-text-secondary)">PAT (₹ Cr)</td><td class="hdfc-c">HDFC</td><td>21,078</td><td>26,257</td><td>31,117</td><td>36,961</td><td>44,109</td><td>60,812</td><td class="up">23.5%</td></tr>
+          <tr><td class="icici-c">ICICI</td><td>3,363</td><td>7,931</td><td>16,193</td><td>23,339</td><td>31,896</td><td>40,888</td><td class="up">~64%</td></tr>
+          <tr><td class="axis-c">Axis</td><td>4,677</td><td>1,627</td><td>7,129</td><td>13,025</td><td>24,861</td><td>26,248</td><td class="up">~41%</td></tr>
+          <tr><td rowspan="3" style="color:var(--color-text-secondary)">GNPA %</td><td class="hdfc-c">HDFC</td><td>1.36%</td><td>1.26%</td><td>1.32%</td><td>1.17%</td><td>1.12%</td><td>1.24%</td><td class="up">–12 bps</td></tr>
+          <tr><td class="icici-c">ICICI</td><td>6.70%</td><td>5.53%</td><td>4.96%</td><td>3.60%</td><td>2.81%</td><td>2.16%</td><td class="up">–454 bps</td></tr>
+          <tr><td class="axis-c">Axis</td><td>5.26%</td><td>4.86%</td><td>3.70%</td><td>2.82%</td><td>1.83%</td><td>1.43%</td><td class="up">–383 bps</td></tr>
+          <tr><td rowspan="3" style="color:var(--color-text-secondary)">ROA %</td><td class="hdfc-c">HDFC</td><td>1.87%</td><td>1.93%</td><td>1.95%</td><td>1.96%</td><td>1.90%</td><td>2.00%</td><td class="up">+13 bps</td></tr>
+          <tr><td class="icici-c">ICICI</td><td>0.39%</td><td>0.81%</td><td>1.49%</td><td>1.92%</td><td>2.35%</td><td>2.38%</td><td class="up">+199 bps</td></tr>
+          <tr><td class="axis-c">Axis</td><td>0.63%</td><td>0.19%</td><td>0.81%</td><td>1.37%</td><td>1.75%</td><td>1.73%</td><td class="up">+110 bps</td></tr>
+          <tr><td rowspan="3" style="color:var(--color-text-secondary)">ROE %</td><td class="hdfc-c">HDFC</td><td>16.5%</td><td>17.0%</td><td>16.9%</td><td>17.0%</td><td>17.1%</td><td>17.6%</td><td>Stable</td></tr>
+          <tr><td class="icici-c">ICICI</td><td>6.0%</td><td>10.4%</td><td>15.1%</td><td>14.7%</td><td>17.9%</td><td>18.0%</td><td class="up">+1,200 bps</td></tr>
+          <tr><td class="axis-c">Axis</td><td>9.5%</td><td>1.9%</td><td>8.0%</td><td>11.8%</td><td>17.6%</td><td>18.0%</td><td class="up">+850 bps</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-title">Scenario PAT Forecast (₹ Crore)</div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <tr><th>Bank</th><th>FY24 Actual</th><th>Worst FY25</th><th>Likely FY25</th><th>Best FY25</th><th>Worst FY26</th><th>Likely FY26</th><th>Best FY26</th></tr>
+          <tr><td class="hdfc-c">HDFC Bank</td><td>60,812</td><td class="dn">57,163 (–6%)</td><td class="kpi-neu">65,677 (+8%)</td><td class="up">69,326 (+14%)</td><td class="dn">58,380 (–4%)</td><td class="kpi-neu">69,934 (+15%)</td><td class="up">74,191 (+22%)</td></tr>
+          <tr><td class="icici-c">ICICI Bank</td><td>40,888</td><td class="dn">36,799 (–10%)</td><td class="kpi-neu">44,977 (+10%)</td><td class="up">48,248 (+18%)</td><td class="dn">38,435 (–6%)</td><td class="kpi-neu">48,248 (+18%)</td><td class="up">52,337 (+28%)</td></tr>
+          <tr><td class="axis-c">Axis Bank</td><td>26,248</td><td class="dn">22,573 (–14%)</td><td class="kpi-neu">29,398 (+12%)</td><td class="up">32,023 (+22%)</td><td class="dn">24,148 (–8%)</td><td class="kpi-neu">31,498 (+20%)</td><td class="up">34,647 (+32%)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const YEARS = ['FY19','FY20','FY21','FY22','FY23','FY24'];
+const DATA = {
+  pat: { hdfc:[21078,26257,31117,36961,44109,60812], icici:[3363,7931,16193,23339,31896,40888], axis:[4677,1627,7129,13025,24861,26248] },
+  nii: { hdfc:[52166,62550,72736,85590,105832,109654], icici:[27015,32694,39271,47654,60096,74065], axis:[22628,26999,28560,33133,43305,50424] },
+  npa: { hdfc:[1.36,1.26,1.32,1.17,1.12,1.24], icici:[6.70,5.53,4.96,3.60,2.81,2.16], axis:[5.26,4.86,3.70,2.82,1.83,1.43] },
+  roa: { hdfc:[1.87,1.93,1.95,1.96,1.90,2.00], icici:[0.39,0.81,1.49,1.92,2.35,2.38], axis:[0.63,0.19,0.81,1.37,1.75,1.73] },
+  roe: { hdfc:[16.5,17.0,16.9,17.0,17.1,17.6], icici:[6.0,10.4,15.1,14.7,17.9,18.0], axis:[9.5,1.9,8.0,11.8,17.6,18.0] },
+  nim: { hdfc:[4.31,4.33,4.31,4.33,4.26,3.63], icici:[3.41,3.57,3.78,4.00,4.65,4.53], axis:[3.59,3.51,3.46,3.47,4.10,4.12] }
+};
+const LABELS = { pat:'Net Profit / PAT (₹ Crore)', nii:'Net Interest Income (₹ Crore)', npa:'Gross NPA %', roa:'Return on Assets %', roe:'Return on Equity %', nim:'Net Interest Margin %' };
+const COLS = { hdfc:'#185FA5', icici:'#854F0B', axis:'#993556' };
+let activeBank='all', activeMetric='pat', activeView='overview', activeSc={w:true,m:true,b:true};
+let charts = {};
+
+function makeChart(id, cfg){ if(charts[id]) charts[id].destroy(); charts[id] = new Chart(document.getElementById(id), cfg); }
+
+function ds(bank, color, metric){ return { label: bank.toUpperCase(), data: DATA[metric][bank], borderColor: color, backgroundColor: color+'22', tension:0.3, pointRadius:3, pointHoverRadius:5, fill:false }; }
+
+function buildMainChart(){
+  const m = activeMetric;
+  const sets = [];
+  if(activeBank==='all'||activeBank==='hdfc') sets.push(ds('hdfc',COLS.hdfc,m));
+  if(activeBank==='all'||activeBank==='icici') sets.push(ds('icici',COLS.icici,m));
+  if(activeBank==='all'||activeBank==='axis') sets.push(ds('axis',COLS.axis,m));
+  makeChart('mainChart',{type:'line',data:{labels:YEARS,datasets:sets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{color:'rgba(128,128,128,0.1)'},ticks:{color:'#888780'}},y:{grid:{color:'rgba(128,128,128,0.1)'},ticks:{color:'#888780'}}}}});
+}
+
+function buildNpaChart(){
+  makeChart('npaChart',{type:'line',data:{labels:YEARS,datasets:[ds('hdfc',COLS.hdfc,'npa'),ds('icici',COLS.icici,'npa'),ds('axis',COLS.axis,'npa')]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780'},grid:{color:'rgba(128,128,128,0.1)'}},y:{ticks:{color:'#888780'},grid:{color:'rgba(128,128,128,0.1)'}}}}});
+}
+
+function buildRatioChart(){
+  makeChart('ratioChart',{type:'bar',data:{labels:['HDFC','ICICI','Axis'],datasets:[{label:'ROA %',data:[2.00,2.38,1.73],backgroundColor:['#378ADD','#378ADD','#378ADD']},{label:'ROE %',data:[17.6,18.0,18.0],backgroundColor:['#1D9E75','#1D9E75','#1D9E75']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780'},grid:{display:false}},y:{ticks:{color:'#888780'},grid:{color:'rgba(128,128,128,0.1)'}}}}});
+}
+
+function buildScChart(){
+  const cats=['FY24','Worst FY25','Likely FY25','Best FY25','Worst FY26','Likely FY26','Best FY26'];
+  const hd=[60812,activeSc.w?57163:null,activeSc.m?65677:null,activeSc.b?69326:null,activeSc.w?58380:null,activeSc.m?69934:null,activeSc.b?74191:null];
+  const ic=[40888,activeSc.w?36799:null,activeSc.m?44977:null,activeSc.b?48248:null,activeSc.w?38435:null,activeSc.m?48248:null,activeSc.b?52337:null];
+  const ax=[26248,activeSc.w?22573:null,activeSc.m?29398:null,activeSc.b?32023:null,activeSc.w?24148:null,activeSc.m?31498:null,activeSc.b?34647:null];
+  const sets = [];
+  if(activeBank==='all'||activeBank==='hdfc') sets.push({label:'HDFC',data:hd,borderColor:COLS.hdfc,backgroundColor:COLS.hdfc+'20',tension:0.2,pointRadius:4,spanGaps:true});
+  if(activeBank==='all'||activeBank==='icici') sets.push({label:'ICICI',data:ic,borderColor:COLS.icici,backgroundColor:COLS.icici+'20',tension:0.2,pointRadius:4,spanGaps:true});
+  if(activeBank==='all'||activeBank==='axis') sets.push({label:'Axis',data:ax,borderColor:COLS.axis,backgroundColor:COLS.axis+'20',tension:0.2,pointRadius:4,spanGaps:true});
+  makeChart('scChart',{type:'line',data:{labels:cats,datasets:sets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{color:'#888780'},grid:{color:'rgba(128,128,128,0.1)'}},y:{ticks:{color:'#888780'},grid:{color:'rgba(128,128,128,0.1)'}}}}});
+}
+
+function buildNpaSc(){
+  makeChart('npaSc',{type:'bar',data:{labels:['HDFC FY24','HDFC W','HDFC M','HDFC B','ICICI FY24','ICICI W','ICICI M','ICICI B','Axis FY24','Axis W','Axis M','Axis B'],datasets:[{data:[1.24,1.80,1.20,0.90,2.16,3.00,2.00,1.50,1.43,2.20,1.30,0.90],backgroundColor:['#185FA5','#E24B4A','#1D9E75','#639922','#854F0B','#E24B4A','#1D9E75','#639922','#993556','#E24B4A','#1D9E75','#639922']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#888780'},grid:{color:'rgba(128,128,128,0.1)'}}}}});
+}
+
+function buildCreditSc(){
+  makeChart('creditSc',{type:'bar',data:{labels:['Worst','Likely','Best'],datasets:[{label:'HDFC',data:[8,14,20],backgroundColor:COLS.hdfc},{label:'ICICI',data:[8,14,20],backgroundColor:COLS.icici},{label:'Axis',data:[6,13,20],backgroundColor:COLS.axis}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780'},grid:{display:false}},y:{ticks:{color:'#888780',callback:v=>v+'%'},grid:{color:'rgba(128,128,128,0.1)'}}}}});
+}
+
+function buildTornado(){
+  makeChart('tornadoChart',{type:'bar',data:{labels:['HDFC Bank','ICICI Bank','Axis Bank'],datasets:[{label:'Worst Case Impact',data:[-6,-10,-14],backgroundColor:'#F09595'},{label:'Most Likely',data:[8,10,12],backgroundColor:'#FAC775'},{label:'Best Case Upside',data:[14,18,22],backgroundColor:'#97C459'}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw>0?'+':''}${ctx.raw}%`}}},scales:{x:{ticks:{color:'#888780',callback:v=>(v>0?'+':'')+v+'%'},grid:{color:'rgba(128,128,128,0.1)'}},y:{ticks:{color:'#888780'},grid:{display:false}}}}});
+}
+
+function buildBankSc(id, wv, mv, bv, color){
+  makeChart(id,{type:'bar',data:{labels:['Worst','Likely','Best'],datasets:[{data:[wv,mv,bv],backgroundColor:['#F09595','#FAC775','#97C459']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888780'},grid:{display:false}},y:{ticks:{color:'#888780',callback:v=>Math.round(v/1000)+'k'},grid:{color:'rgba(128,128,128,0.1)'}}}}});
+}
+
+function initCharts(){
+  buildMainChart(); buildNpaChart(); buildRatioChart();
+}
+initCharts();
+
+function setBank(b, el){
+  activeBank = b;
+  document.querySelectorAll('.pill').forEach(p=>{ p.className='pill'; });
+  el.className = 'pill active '+(b==='hdfc'?'hdfc':b==='icici'?'icici':b==='axis'?'axis':'all');
+  buildMainChart();
+  if(activeView==='scenario') buildScChart();
+  document.getElementById('dash-title').textContent = (b==='all'?'All Banks':b.toUpperCase()+' Bank') + ' — ' + LABELS[activeMetric];
+}
+
+function setMetric(m){
+  activeMetric = m;
+  document.getElementById('main-chart-title').textContent = LABELS[m];
+  document.getElementById('dash-title').textContent = (activeBank==='all'?'All Banks':activeBank.toUpperCase()+' Bank') + ' — ' + LABELS[m];
+  buildMainChart();
+}
+
+function setView(v, el){
+  activeView = v;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['overview','scenario','sensitivity','table'].forEach(n=>{ document.getElementById('view-'+n).style.display = n===v?'block':'none'; });
+  setTimeout(()=>{
+    if(v==='scenario'){ buildScChart(); buildNpaSc(); buildCreditSc(); }
+    if(v==='sensitivity'){ buildTornado(); buildBankSc('hdfcSc',57163,65677,69326,COLS.hdfc); buildBankSc('iciciSc',36799,44977,48248,COLS.icici); buildBankSc('axisSc',22573,29398,32023,COLS.axis); }
+  },50);
+}
+
+function toggleSc(sc, el){
+  activeSc[sc] = !activeSc[sc];
+  el.classList.toggle('inactive');
+  buildScChart();
+}
+</script>
